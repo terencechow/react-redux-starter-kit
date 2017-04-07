@@ -2,15 +2,15 @@ import { browserHistory } from 'react-router'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const COUNTER_INCREMENT = 'COUNTER_INCREMENT'
-export const COUNTER_DOUBLE_ASYNC = 'COUNTER_DOUBLE_ASYNC'
+export const COUNTER_DECREMENT = 'COUNTER_DECREMENT'
+export const COUNTER_HALF_ASYNC = 'COUNTER_HALF_ASYNC'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function increment (value = 1) {
+export function decrement (value = 1) {
   return {
-    type    : COUNTER_INCREMENT,
+    type    : COUNTER_DECREMENT,
     payload : value
   }
 }
@@ -19,34 +19,34 @@ export function increment (value = 1) {
     returns a function for lazy evaluation. It is incredibly useful for
     creating async actions, especially when combined with redux-thunk! */
 
-export const doubleAsync = () => {
+export const halfAsync = () => {
   return (dispatch, getState) => {
     dispatch({
-      type    : COUNTER_DOUBLE_ASYNC,
-      payload : getState().counter
+      type    : COUNTER_HALF_ASYNC,
+      payload : getState().otherPage
     })
-    browserHistory.push('/otherPage')
+    browserHistory.push('/counter')
   }
 }
 
 export const actions = {
-  increment,
-  doubleAsync
+  decrement,
+  halfAsync
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [COUNTER_INCREMENT]    : (state, action) => state + action.payload,
-  [COUNTER_DOUBLE_ASYNC] : (state, action) => state * 2
+  [COUNTER_DECREMENT]    : (state, action) => state - action.payload,
+  [COUNTER_HALF_ASYNC] : (state, action) => state * 0.5
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = 1
-export default function counterReducer (state = initialState, action) {
+const initialState = 5
+export default function otherPageReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state
